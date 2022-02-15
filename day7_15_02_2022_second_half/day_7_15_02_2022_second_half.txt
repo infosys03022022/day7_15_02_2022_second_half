@@ -1,0 +1,335 @@
+1) Association
+2) Aggregation
+3) Inheritance
+4) Polymorphism
+   * Method overloading and Constructor overloading
+   * Method overriding 
+------------------------------------------------------------------------------------------
+We have employees and we have two types as Contractor and Permanent. Both the types are
+identified by id and name ( name will be a class) and also we store the pay info for the employees. But the way pay is calculated is different for both Contractor and Permanent employees.Both of them
+get an initial amount and for contractor we have overtime which is calculated as numberofhours
+*amountHrlyBasic but for Permanent Employee we have hra and da along with the initial amount.
+For both the type we have the holidays but for leave , Contractor can avail only medicalLeaves
+whereas for Permanent employee we have el+ml+cl. The Employees can bring in food
+from home or they can take the food from the Cafeteria.
+
+Identify various classes:-
+Contractor
+Permanent
+Employee 
+Cafeteria
+Name
+---------------------------------------------------------------------
+
+
+Inheritance we have to check the "IS-A" Relationship
+
+
+package infosys.demo.revise;
+
+public class Employee {}
+public class PermanentEmployee extends Employee {}
+public class Contractor extends Employee {}
+public class Cafeteria {} 
+public class Name {} 
+-----------------------------------------------------------------
+For Aggregation we say "HAS-A" Relationship
+public class Employee {
+  private Name name;
+}
+
+For Association we say "USES" or "RELATED"
+Cafeteria and PermanentEmployee
+Cafeteria and Contractor
+-------------------------------------------------------------------------------------------------
+public class Name {
+  private String firstName;
+  private String middleName;
+  private String lastName;
+  
+  // setter/getters;
+ }
+
+
+package infosys.demo.revise;
+   public class Employee {
+    private int id;
+    private Name name;
+    private int initialAmount;
+
+   // setter/getters method;
+   public int getInitialAmount() 
+   {
+    return initialAmount;
+   }
+ 
+   public int payment() {
+    return initialAmount;
+    }
+ 
+   public void displayHolidayList(){
+     System.out.println("Diwali");
+     System.out.println("Id");
+     System.out.println("Holi");
+     }
+     
+
+   }
+       
+  public class PermanentEmployee extends Employee {
+   private float hra;
+   private float da;
+   private int cl;
+   private int el;
+   private int ml;  
+    
+  // setter and getter/methods
+   // hra is 10%basic
+   // da is 50%basic
+    // So are we going to have setter method for hra and da?
+    // So design only the getter method for hra and da
+
+    public float getHra() {
+       hra=getInitialAmount()*.10;
+       return hra;
+      }
+    public float getDa() {
+      da=getInitialAmount()*.50;
+     }
+
+    public int payment(){
+      
+      int pay=getInitialAmount()+hra+da;
+      return pay;
+    } 
+ 
+     public int leaveTaken(){
+       return cl+ml+el;
+
+     }
+
+    public void getFood() {
+     System.out.println("Getting food from home");
+    }
+
+    public String getFood(Cafeteria cafe){
+      String food=cafe.getFood();
+      return food;
+    }
+
+   } 
+
+   
+   public class Contractor extends Employee {
+     private int hoursWorked;
+     
+    // setter and getter
+  
+     public int payment() {
+      int pay=getInitialAmount()+hoursWorked*500; 
+      return pay;
+      }
+     
+      public void getMedicalLeave(){
+       return 5;
+      }
+
+   }
+
+   public class Cafeteria  {
+    String foodItems[]={"Noodles","Dosa"};
+    int price[]={75,60};
+   
+      public String getFood() {
+        return foodItems[0];
+      }  
+  
+    }
+
+  public class Main {
+   public static void main(String args[]) {
+    Employee employee=new Employee();
+    employee.displayHolidayList();
+    System.out.println(employee.payment());
+    
+    PermanentEmployee permEmployee=new PermanentEmployee();
+    permEmployee.displayHolidayList();
+    System.out.println(permEmployee.payment());
+
+    Employee employee2=new PermanentEmployee();
+    employee2.displayHolidayList();
+    employee2.payment();  // The payment method of the subclass
+    /* employee2.leaveTaken();
+       employee2.getFood(); */ // Compilation error
+    PermanentEmployee pe=(PermanentEmployee)employee2;
+    pe.leaveTaken();
+    pe.getFood();
+    }
+
+  }
+ ---------------------------------------------------------------------------------------------    
+   Object class is a predefined class and which is a base class of all the classes ( Both predefined
+and userdefined classes). So all the classes directly or indirectly is being inherited from the 
+Object class. So suppose if we are writing 
+
+  class Employee {}
+  class Student  {}
+
+ The class Employee and class Student is being derived from Object class.
+
+  class Employee {} // class Employee is beign derived from Object class.
+  class Contractor extends Employee{} /// class Contractor is extending the class Employee and 
+  // Employee in turn is extending from Object so Object is being indirectly inherited by the
+  // Contractor class.
+
+   Object
+    |
+    |
+   Employee
+    |
+    |
+   Contractor 
+    
+
+    Contractor contractor=new Contractor();
+    Object obj=contractor;
+    Employee emp=contractor;
+  ----------------------------------------------------
+If equals return true , then hashCode should be same but if the hashCode is same , it is not 
+guaranteed that objects will be same.
+---------------------------------------------------------------------------    
+   primitive type      Wrapper
+   char                Character
+   byte                Byte
+   short               Short
+   int                 Integer
+   long                Long
+   float               Float
+   double              Double
+   boolean             Boolean
+--------------------------------------------------------------------------------------------------
+final keyword can be used with a class, with an instance variable and with a method and even
+with local variables.
+
+  So instance variables declared as final cannot reinitialised. They can be initialised at the place
+of declaration or with the constructor.
+
+final class cannot be subclassed.  
+
+
+The final method cannot be overridden. 
+-----------------------------------------------------------------------------------------------------
+
+package infosys.demo.withoutabstract;
+
+   public class Triangle {
+     private int x;
+     private int y;
+
+     public int calculateArea() {
+      int area=(x*y)/2;
+      return area;
+     }
+      public void setX(int x){
+       this.x=x;
+      }
+      // setter/getters
+
+     }  
+
+    public class Rectangle {
+    private int x;
+    private int y;
+    public int calculateArea() {
+     int area=x*y;
+     return area;
+    }
+    setter/getters
+   }
+
+   public class Display {
+
+    public void display(Triangle t) {
+    System.out.println(t.calculateArea());
+    }
+
+   public void display(Rectangle r) {
+    System.out.println(r.calculateArea());
+    }
+  }
+
+  public class Main  {
+   public static void main(String args[]) {
+      Display disp=new Display();
+      Triangle triangle=new Triangle();
+      Rectangle rectangle=new Rectangle();
+      triangle.setX(10);
+      triangle.setY(2);
+      disp.display(triangle);
+      rectangle.setX(20);
+      rectangle.setY(10);
+      disp.display(rectangle);
+    }
+ }
+      
+---------------------------------------------------------
+* In Triangle and Rectangle classes we have repeated x and y and also setters and getters.
+* The method calculateArea in both the classes ( Rectangle and Triangle ) are having same
+  signature but implementations are different.
+* We are writing overloaded form for the displayArea in Display class. So the challenge is
+  when we add one more shape we have add one more method in the class Display.
+------------------------------------------------------------------------------------------
+
+package infosys.demo.withabstract;
+   public class Shape {
+    protected int x;
+    protected int y;
+   
+    setters/getters;
+
+   }
+
+  package infosys.demo.withabstract;
+  public class Rectangle extends Shape {
+
+    public int calculateArea() {
+     int area=x*y;
+     return area;
+    }
+  }
+
+  public class Triangle extends Shape {
+
+    public int calculateArea() {
+     int area=(x*y)/2;
+     return area;
+    }
+  }
+
+ public class Display {
+
+    public void display(Shape s) {
+    System.out.println(s.calculateArea());
+    }
+
+  }
+
+  public class Main {
+      public static void main(String str[]) {
+      Display disp=new Display();
+      Shape shape=null;
+      Triangle triangle=new Triangle();
+      triangle.setX(10);
+      triangle.setY(20);
+      shape=triangle; // Base class reference storing the address of the derived class object
+      disp.displayArea(shape);
+      Rectangle rectangle=new Rectangle();
+      rectangle.setX(10);
+      rectangle.setY(20);
+      shape=rectangle;
+      disp.displayArea(shape);
+    }
+  } 
+   
+
+
